@@ -12,6 +12,7 @@ functions{
   // Set recall to 0 to get model without recall bias
   // Set nu to be greater than max_shed to get model
   // without conditioning on nu.
+  // recall not used at the moment.
   real validgamma_lpdf(real x, real nu, real max_shed, real alpha1,
                     real beta1, real offset, real recall, 
                     real alpha2, real beta2, real width) {
@@ -31,7 +32,9 @@ functions{
       out = out + (exp(inf_density + inc_density) * width);
       s = s + width;
     }
-    out = log(out) - recall * fabs(x - nu);
+    // If you want to use recall this is how you would do it;
+    // not being used at the moment though.
+    //out = log(out) - recall * fabs(x - nu);
     return out;
   }
   
