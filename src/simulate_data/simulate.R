@@ -37,7 +37,7 @@ nsim <- 50000
 nsim_post_filter <- 100
 ## For each parameter combination simulate
 ## multiple data sets
-ndatasets <- 50
+ndatasets <- 1
 max_shed <- 21
 params <- list(
   inf_par1 = list(mean_inf = 4, sd_inf = 2), ## short
@@ -60,6 +60,10 @@ param_grid <- expand.grid(
   params_iso = c("iso_par1"), offset = params$offset1,
   stringsAsFactors = FALSE
 )
+
+saveRDS(params, "params.rds")
+saveRDS(param_grid, "param_grid.rds")
+saveRDS(max_shed, "max_shed.rds")
 
 valid_unfiltered <- pmap(
   param_grid,
