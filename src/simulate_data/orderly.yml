@@ -1,0 +1,8 @@
+script: simulate.R
+
+packages:
+- epitrix
+- ggplot2
+- glue
+- purrr
+
