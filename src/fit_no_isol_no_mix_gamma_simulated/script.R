@@ -21,7 +21,7 @@ pwalk(
       cv = param_inc$sd_inc / param_inc$mean_inc
     )
     si_vec <- seq(offset + 0.5, max_valid_si, 1)
-    out <- imap(sim_data, function(x, index2) {
+    iwalk(sim_data, function(x, index2) {
       x <- x[x$type == "valid filtered", ]
       x <- arrange(x, nu)
       fit <- stan(
@@ -43,15 +43,15 @@ pwalk(
       ),
       chains = 2, iter = 2000,
       seed = 42,
-      verbose = FALSE
+      verbose = TRUE
       )
       ## control = list(adapt_delta = 0.99)
+      outfile <- glue(
+        "param_{index1}_sim_{index2}_fit.rds"
+      )
+      saveRDS(fit, outfile)
     }
     )
-    outfile <- glue(
-      "param_{index1}_sim_{index2}.rds"
-    )
-    saveRDS(out, outfile)
   }
 )
 
