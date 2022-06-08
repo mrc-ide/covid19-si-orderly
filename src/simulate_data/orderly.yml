@@ -6,3 +6,10 @@ packages:
 - glue
 - purrr
 
+
+artefacts:
+  data:
+    description: Simulated data and parameters
+    filenames:
+      - simulated_data.rds
+
