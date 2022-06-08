@@ -1,0 +1,16 @@
+script: eda.R
+
+packages:
+- dplyr
+- epicontacts
+- ggplot2
+
+
+depends:
+  - clean_cowling_data_1:
+      id: latest
+      use:
+         cowling_data_clean.rds: cowling_data_clean.rds
+         cowling_linelist_clean.rds: cowling_linelist_clean.rds
+         cowling_contacts_clean.rds: cowling_contacts_clean.rds
+      
