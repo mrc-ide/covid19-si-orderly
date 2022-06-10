@@ -4,4 +4,7 @@ archive/
 data/
 
 draft/
-.Rproj.user
+
+.Rproj.user/
+
+orderly.sqlite
