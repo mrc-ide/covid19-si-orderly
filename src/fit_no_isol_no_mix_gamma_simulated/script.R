@@ -6,7 +6,7 @@ max_shed <- readRDS("max_shed.rds")
 max_valid_si <- 40
 
 width <- 0.1
-
+dir.create('stanfits')
 pwalk(
   list(
     params_inc = param_grid$params_inc,
@@ -27,9 +27,9 @@ pwalk(
       fit <- stan(
         file = "scenario3a_gamma.stan",
         data = list(
-          N = length(sim_data$si),
-          si = sim_data$si,
-          nu = sim_data$nu,
+          N = length(x$si),
+          si = x$si,
+          nu = x$nu,
           max_shed = max_shed,
           offset1 = offset,
           alpha2 = param_inc[["shape"]],
@@ -41,13 +41,13 @@ pwalk(
           si_vec = si_vec,
           first_valid_nu = 1
       ),
-      chains = 2, iter = 2000,
+      chains = 2, iter = 5000,
       seed = 42,
       verbose = TRUE
       )
       ## control = list(adapt_delta = 0.99)
       outfile <- glue(
-        "param_{index1}_sim_{index2}_fit.rds"
+        "stanfits/param_{index1}_sim_{index2}_fit.rds"
       )
       saveRDS(fit, outfile)
     }
@@ -55,5 +55,6 @@ pwalk(
   }
 )
 
+zip('s3_stanfits.zip', 'stanfits')
 
 

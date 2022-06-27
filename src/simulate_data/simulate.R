@@ -37,7 +37,7 @@ nsim <- 50000
 nsim_post_filter <- 100
 ## For each parameter combination simulate
 ## multiple data sets
-ndatasets <- 1
+ndatasets <- 50
 max_shed <- 21
 params <- list(
   inf_par1 = list(mean_inf = 4, sd_inf = 2), ## short
