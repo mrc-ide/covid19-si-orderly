@@ -1,9 +1,10 @@
 ## orderly::orderly_develop_start(use_draft = "newer")
 short_run <- FALSE
-ndatasets <- ifelse(short_run, 1, length(sim_data[[1]]))
+
 params <- readRDS("params.rds")
 param_grid <- readRDS("param_grid.rds")
 simulated_data <- readRDS("simulated_data.rds")
+ndatasets <- ifelse(short_run, 1, 50)
 max_shed <- readRDS("max_shed.rds")
 max_valid_si <- 40
 rstan_options(auto_write = TRUE)
