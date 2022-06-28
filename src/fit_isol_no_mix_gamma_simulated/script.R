@@ -1,15 +1,15 @@
 ## orderly::orderly_develop_start(use_draft = "newer")
-short_run <- TRUE
+short_run <- FALSE
 ndatasets <- ifelse(short_run, 1, length(sim_data[[1]]))
 params <- readRDS("params.rds")
 param_grid <- readRDS("param_grid.rds")
 simulated_data <- readRDS("simulated_data.rds")
 max_shed <- readRDS("max_shed.rds")
 max_valid_si <- 40
-
+rstan_options(auto_write = TRUE)
 width <- 0.1
 dir.create('stanfits')
-plan(multisession, workers = 2)
+plan(multisession, workers = 6)
 future_pwalk(
   list(
     params_inc = param_grid$params_inc,
