@@ -9,7 +9,8 @@ max_valid_si <- 40
 
 width <- 0.1
 dir.create('stanfits')
-pwalk(
+plan(multisession, workers = 2)
+future_pwalk(
   list(
     params_inc = param_grid$params_inc,
     offset = param_grid$offset,
@@ -23,7 +24,7 @@ pwalk(
       cv = param_inc$sd_inc / param_inc$mean_inc
     )
     si_vec <- seq(offset + 0.5, max_valid_si, 1)
-    iwalk(sim_data, function(x, index2) {
+    future_iwalk(sim_data, function(x, index2) {
       x <- x[x$type == "valid filtered", ]
       x <- arrange(x, nu)
       fit <- stan(
