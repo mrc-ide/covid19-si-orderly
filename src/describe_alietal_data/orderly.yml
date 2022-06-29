@@ -1,4 +1,4 @@
-script: describe_cowling_data.R
+script: describe_alietal_data.R
 
 packages:
 - dplyr
@@ -8,12 +8,12 @@ packages:
 
 
 depends:
-  - clean_cowling_data_1:
+  - clean_alietal_data_1:
       id: latest
       use:
-         cowling_data_clean.rds: cowling_data_clean.rds
-         cowling_linelist_clean.rds: cowling_linelist_clean.rds
-         cowling_contacts_clean.rds: cowling_contacts_clean.rds
+         alietal_data_clean.rds: alietal_data_clean.rds
+         alietal_linelist_clean.rds: alietal_linelist_clean.rds
+         alietal_contacts_clean.rds: alietal_contacts_clean.rds
 
 artefacts:
   - staticgraph:

@@ -2,9 +2,9 @@
 # to produces figures 1-6 for the supplementary material
 
 # read in the data
-tp_data <- readRDS("cowling_data_clean.rds")
-linelist <- readRDS("cowling_linelist_clean.rds")
-contacts <- readRDS("cowling_contacts_clean.rds")
+tp_data <- readRDS("alietal_data_clean.rds")
+linelist <- readRDS("alietal_linelist_clean.rds")
+contacts <- readRDS("alietal_contacts_clean.rds")
 
 tp_data <- tp_data %>% filter(onset_first_iso != "NA")
 
@@ -229,6 +229,91 @@ pS4 <- plot_grid(rel_widths = c(2, 1),
                  labels = c("A", "B"))
 
 ggsave(filename = "pS4.png", pS4)
+
+# Figure 3 - potential extra investigations into importation time
+
+# SI v nu but colour points by importation status of primary case
+ggplot(data = tp_data,
+       aes(y = as.numeric(onset_first_iso), x = as.numeric(si)))+
+  geom_point(aes(fill = infector_returned_fromOtherCity), size = 3, alpha = 0.5, shape = 21, colour = "transparent")+
+  geom_smooth(method = "lm", colour = "firebrick")+
+  theme_minimal()+
+  xlab("Serial Interval (days)")+
+  ylab("Delay from symptom onset to \nisolation of the primary case (days)")+
+  theme(text = element_text(size = 20))
+
+# difference in the difference between isolation delay and the si
+# by importation status of the primary case
+ggplot(data = tp_data)+
+  geom_boxplot(aes(x = infector_returned_fromOtherCity,
+                   y = onset_first_iso - si,
+                   fill = infector_returned_fromOtherCity))+
+  theme_minimal()
+
+# difference in isolation delay by importation status of primary case
+ggplot(data = tp_data)+
+  geom_boxplot(aes(x = infector_returned_fromOtherCity,
+                   y = onset_first_iso,
+                   fill = infector_returned_fromOtherCity))+
+  theme_minimal()
+
+# correlation between delay to isolation and delay to importation
+ggplot(data = tp_data,
+       aes(y = as.numeric(onset_first_iso), x = as.numeric(onset_imp)))+
+  geom_point(aes(fill = infector_returned_fromOtherCity), size = 3, alpha = 0.5, shape = 21, colour = "transparent")+
+  geom_smooth(method = "lm", colour = "firebrick")+
+  theme_minimal()+
+  xlab("Delay from symptom onset to return (days)")+
+  ylab("Delay from symptom onset to \nisolation of the primary case (days)")+
+  theme(text = element_text(size = 20))+
+  geom_abline(slope = 1, intercept = 0, col = "firebrick", lty = 2)
+
+cor.test(method = "pearson", 
+         x = as.numeric(tp_data$onset_imp), 
+         y = as.numeric(tp_data$onset_first_iso), 
+         use = "pairwise.complete.obs")
+
+# correlation between diff between si and delay to isolation and delay to importation
+ggplot(data = tp_data,
+       aes(y = as.numeric(onset_first_iso - si), x = as.numeric(onset_imp)))+
+  geom_point(aes(fill = infector_returned_fromOtherCity), size = 3, alpha = 0.5, shape = 21, colour = "transparent")+
+  geom_smooth(method = "lm", colour = "firebrick")+
+  theme_minimal()+
+  xlab("Delay from symptom onset to return (days)")+
+  ylab("Difference between delay to isolation\nand symptom onset of secondary")+
+  theme(text = element_text(size = 20))
+cor.test(method = "pearson", 
+         x = as.numeric(tp_data$onset_imp), 
+         y = as.numeric(tp_data$onset_first_iso - tp_data$si), 
+         use = "pairwise.complete.obs")
+
+# correlation between date of symptom onset and delay to isolation
+ggplot(data = tp_data,
+       aes(y = as.numeric(onset_first_iso), x = infector_onsetDate))+
+  geom_point(aes(fill = infector_returned_fromOtherCity), size = 3, alpha = 0.5, shape = 21, colour = "transparent")+
+  geom_smooth(method = "lm", colour = "firebrick")+
+  theme_minimal()+
+  xlab("Date of symptom onset of primary case")+
+  ylab("Delay to isolation of primary")+
+  theme(text = element_text(size = 20))
+cor.test(method = "pearson", 
+         x = as.numeric(tp_data$infector_onsetDate), 
+         y = as.numeric(tp_data$onset_first_iso), 
+         use = "pairwise.complete.obs")
+
+# correlation between date of symptom onset and delay to importation
+ggplot(data = tp_data,
+       aes(y = as.numeric(onset_imp), x = infector_onsetDate))+
+  geom_point(aes(fill = infector_returned_fromOtherCity), size = 3, alpha = 0.5, shape = 21, colour = "transparent")+
+  geom_smooth(method = "lm", colour = "firebrick")+
+  theme_minimal()+
+  xlab("Date of symptom onset of primary case")+
+  ylab("Delay from symptom onset to importation")+
+  theme(text = element_text(size = 20))
+cor.test(method = "pearson", 
+         x = as.numeric(tp_data$infector_onsetDate), 
+         y = as.numeric(tp_data$onset_imp), 
+         use = "pairwise.complete.obs")
 
 # tp_data_median_imp <- tp_data %>%
 #   group_by(infector_returned_fromOtherCity) %>%
