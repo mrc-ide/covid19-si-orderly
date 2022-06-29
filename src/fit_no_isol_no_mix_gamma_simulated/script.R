@@ -29,7 +29,6 @@ pwalk(
         data = list(
           N = length(x$si),
           si = x$si,
-          nu = x$nu,
           max_shed = max_shed,
           offset1 = offset,
           alpha2 = param_inc[["shape"]],
