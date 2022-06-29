@@ -1,0 +1,31 @@
+script: script.R
+
+packages:
+- dplyr
+- epitrix
+- glue
+- purrr
+- rstan
+- zip
+
+artefacts:
+  - data:
+      description: Fitted and simulated SIs
+      filenames:
+        - simulated_si.rds
+        - fitted_si_s3.rds
+
+depends:
+  - simulate_data:
+      id: latest
+      use:
+        simulated_data.rds: simulated_data.rds
+        param_grid.rds: param_grid.rds
+        params.rds: params.rds
+        max_shed.rds: max_shed.rds
+  - fit_no_isol_no_mix_gamma_simulated:
+      id: latest
+      use:
+        s3_stanfits.zip: s3_stanfits.zip
+        
+

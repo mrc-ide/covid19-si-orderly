@@ -1,0 +1,25 @@
+script: script.R
+
+packages:
+- dplyr
+- epitrix
+- glue
+- purrr
+- rstan
+- zip
+
+global_resources:
+- scenario3a_mixture_gamma.stan  
+- likelihoods_gamma.stan
+
+artefacts:
+  data:
+    description: Stan fits for S3 Mixture
+    filenames:
+      - s3mixture_cowling.rds
+
+depends:
+  - clean_cowling_data_1:
+      id: latest
+      use:
+        cowling_data_clean.rds: cowling_data_clean.rds

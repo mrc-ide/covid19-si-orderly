@@ -1,0 +1,20 @@
+script: raw_to_clean.R
+packages:
+- dplyr
+- epicontacts
+- lubridate
+
+resources:
+- alietal_data.csv
+
+artefacts:
+  data:
+    description: Clean data from Ali et al.
+    filenames:
+      - alietal_data_clean.rds
+      - alietal_linelist_clean.rds
+      - alietal_contacts_clean.rds
+      - alietal_pairs.rds
+      - alietal_part_isol.rds
+      - alietal_part_isol_pairs.rds
+

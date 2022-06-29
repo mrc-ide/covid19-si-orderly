@@ -1,0 +1,29 @@
+script: script.R
+
+packages:
+- dplyr
+- epitrix
+- glue
+- purrr
+- rstan
+- zip
+
+global_resources:
+- scenario3a_gamma.stan  
+- likelihoods_gamma.stan
+
+artefacts:
+  data:
+    description: Stan fits for S3
+    filenames:
+      - s3_stanfits.zip
+
+depends:
+  - simulate_data:
+      id: latest
+      use:
+        simulated_data.rds: simulated_data.rds
+        param_grid.rds: param_grid.rds
+        params.rds: params.rds
+        max_shed.rds: max_shed.rds
+  

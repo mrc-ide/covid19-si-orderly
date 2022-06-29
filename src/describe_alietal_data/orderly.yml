@@ -1,0 +1,27 @@
+script: describe_alietal_data.R
+
+packages:
+- dplyr
+- epicontacts
+- ggplot2
+- cowplot
+
+
+depends:
+  - clean_alietal_data_1:
+      id: latest
+      use:
+         alietal_data_clean.rds: alietal_data_clean.rds
+         alietal_linelist_clean.rds: alietal_linelist_clean.rds
+         alietal_contacts_clean.rds: alietal_contacts_clean.rds
+
+artefacts:
+  - staticgraph:
+      description: simple descriptive graphs
+      filenames:
+      - pS1.png
+      - pS2.png
+      - pS3.png
+      - pS4.png
+      
+      

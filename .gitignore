@@ -1,7 +1,10 @@
 
 archive/
-
 data/
-
 draft/
-.Rproj.user
+.Rproj.user/
+orderly.sqlite
+src/describe_cowling_data/.Rhistory
+.Rhistory
+*.rds
+
