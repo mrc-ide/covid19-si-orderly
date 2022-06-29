@@ -1,3 +1,4 @@
+# orderly::orderly_develop_start()
 # Here we take the data made available by Ali et al.
 # https://github.com/PDGLin/COVID19_EffSerialInterval_NPI
 # and explore it and subset it for our purposes, producing to two outputs
@@ -8,13 +9,13 @@
 # TRANSMISSION PAIR DATA CLEANING #
 ###################################
 
-data <- read.csv("cowling_data.csv", stringsAsFactors = FALSE) # csv downloaded from github
+data <- read.csv("alietal_data.csv", stringsAsFactors = FALSE) # csv downloaded from github
 
 # change "unknown" --> NA
 data[data == "unknown"] <- NA
 
 # create new columns to indicate local/imported/NA
-data <- data%>%
+data <- data %>%
   mutate(infector_returned_fromOtherCity = infector_returnDate_fromOtherCity)%>%
   mutate(infectee_returned_fromOtherCity = infectee_returnDate_fromOtherCity)
 
@@ -39,15 +40,16 @@ si_data <- si_data%>%
   mutate(both_dates = before_symp + after_symp)
 
 # what is the difference between the two dates?
-si_data <- si_data%>%
+si_data <- si_data %>%
   mutate(onset_iso_b4 = infector_isolateDate_beforeSymptom - infector_onsetDate)%>%
   mutate(onset_iso_aft = infector_isolateDate_afterSymptom - infector_onsetDate)%>%
   mutate(iso_diff = infector_isolateDate_afterSymptom - infector_isolateDate_beforeSymptom)
 
 # create a column using the earliest date of isolation available
-si_data <- si_data %>% 
-  mutate(onset_first_iso = purrr::pmap_dbl(list(onset_iso_b4, onset_iso_aft), min, na.rm = TRUE))
-si_data$onset_first_iso[si_data$onset_first_iso == Inf] <- NA #when both values were NA it resulted in Inf
+si_data <- si_data %>%
+  mutate(onset_first_iso = pmap_dbl(list(onset_iso_b4, onset_iso_aft), min, na.rm = TRUE))
+#when both values were NA it resulted in Inf
+si_data$onset_first_iso[!is.finite(si_data$onset_first_iso)] <- NA
 
 # what is the difference between date of first hospital visit and isolation after symptoms
 si_data <- si_data%>%
@@ -68,13 +70,13 @@ infector_ind <- grep("infector",
                      x = names(si_data))
 
 infectee_ind <- infectee_ind[c(-1,-15)] # we don't want the relationship bc not symmetrical
-infector_ind <- infector_ind[c(-14,-15)] 
+infector_ind <- infector_ind[c(-14,-15)]
 
 infectee_data <- si_data[,infectee_ind]
 infector_data <- si_data[,infector_ind]
 
 #get rid of the infectee or infector in column names so we can make long
-ll_names <- c("id", "age", "sex", "reportCity", 
+ll_names <- c("id", "age", "sex", "reportCity",
               "infectCity", "onsetDate", "returnDate_fromOtherCity",
               "isolateDate_beforeSymptom", "firstHospitalVisit",
               "isolateDate_afterSymptom", "labConfirmDate", "disclosureDate",
@@ -95,17 +97,17 @@ linelist_unique$infectee <- linelist_unique$id %in% infectees
 
 # extract contacts
 contacts <- si_data%>%
-  dplyr::rename(from = infector_id, to = infectee_id)%>%
+  rename(from = infector_id, to = infectee_id)%>%
   mutate(si = infectee_onsetDate - infector_onsetDate)%>%
-  dplyr::select(from,to, si, isHousehold)
+  select(from,to, si, isHousehold)
 
-cowling_epicontacts <- make_epicontacts(linelist = linelist_unique, 
+alietal_epicontacts <- make_epicontacts(linelist = linelist_unique,
                                         contacts = contacts,
                                         directed = TRUE)
 # extract cluster information for each individual case
-linelist_clusters <- get_clusters(cowling_epicontacts, 
+linelist_clusters <- get_clusters(alietal_epicontacts,
                                   output = "data.frame",
-                                  member_col = "cluster_member", 
+                                  member_col = "cluster_member",
                                   size_col = "cluster_size",
                                   override = FALSE)
 
@@ -116,7 +118,50 @@ si_data <- si_data%>%
 ############################
 # SAVE CLEAN/WRANGLED DATA #
 ############################
+si_data$si <- as.numeric(si_data$si, units="days")
+si_data$nu <- si_data$onset_first_iso
+si_data <- si_data[! is.na(si_data$nu), ]
+si_data <- arrange(si_data, nu)
+saveRDS(file = "alietal_data_clean.rds", si_data) # save transmission pair data for fitting
+saveRDS(file = "alietal_linelist_clean.rds", linelist_unique) # save linelist for data exploration
+saveRDS(file = "alietal_contacts_clean.rds", contacts) # save contacts for data exploration
 
-saveRDS(file = "cowling_data_clean.rds", si_data) # save transmission pair data for fitting
-saveRDS(file = "cowling_linelist_clean.rds", linelist_unique) # save linelist for data exploration
-saveRDS(file = "cowling_contacts_clean.rds", contacts) # save contacts for data exploration
+## S3S4 and Discrete pairs
+data_discrete_pairs <- filter(si_data, cluster_size == 2)
+saveRDS(data_discrete_pairs, "alietal_pairs.rds")
+
+# whole data set with nu replacement for s3 type pairs
+data_s3_s4mix <- si_data %>%
+  mutate(
+    infector_first_isolateDate = pmap_dbl(
+      list(infector_isolateDate_beforeSymptom,
+           infector_isolateDate_afterSymptom), min, na.rm = TRUE
+    ),
+    infectee_first_isolateDate = pmap_dbl(
+      list(infectee_isolateDate_beforeSymptom,
+           infectee_isolateDate_afterSymptom), min, na.rm = TRUE
+    )
+  )
+
+## when a value is NA it results in Inf
+data_s3_s4mix$infector_first_isolateDate[! is.finite(data_s3_s4mix$infector_first_isolateDate)] <- NA
+data_s3_s4mix$infector_first_isolateDate <- as.Date(data_s3_s4mix$infector_first_isolateDate, origin = "1970-01-01")
+## when both values are NA it results in Inf
+data_s3_s4mix$infectee_first_isolateDate[! is.finite(data_s3_s4mix$infectee_first_isolateDate)] <- NA
+data_s3_s4mix$infectee_first_isolateDate <- as.Date(data_s3_s4mix$infectee_first_isolateDate, origin = "1970-01-01")
+
+for(i in 1:(length(data_s3_s4mix$infector_first_isolateDate))){
+  if(!is.na(data_s3_s4mix$infectee_first_isolateDate[i])){
+    if(data_s3_s4mix$infector_first_isolateDate[i] >= data_s3_s4mix$infectee_onsetDate[i] && data_s3_s4mix$infector_first_isolateDate[i] >= data_s3_s4mix$infectee_first_isolateDate[i]){
+      if(data_s3_s4mix$infectee_first_isolateDate[i] >= data_s3_s4mix$infectee_onsetDate[i]){
+        data_s3_s4mix$nu[i] <- 41
+      }
+    }
+  }
+}
+data_s3_s4mix <- arrange(data_s3_s4mix, nu)
+saveRDS(data_s3_s4mix, "alietal_part_isol.rds")
+## discrete pairs with nu replacement for s3 type pairs
+data_discrete_pairs_s3_s4mix <- filter(data_s3_s4mix, cluster_size == 2)
+data_discrete_pairs_s3_s4mix <- arrange(data_discrete_pairs_s3_s4mix, nu)
+saveRDS(data_s3_s4mix, "alietal_part_isol_pairs.rds")
