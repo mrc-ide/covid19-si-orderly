@@ -215,6 +215,7 @@ tp_data$infector_returned_fromOtherCity[is.na(
   tp_data$infector_returned_fromOtherCity)] <- "unknown"
 table_imp <- as.data.frame(table(tp_data$infector_returned_fromOtherCity))
 
+sum(tp_data$onset_imp>0, na.rm=TRUE)
 pS4B <- ggplot(table_imp)+
   geom_bar(aes(x = Var1, y = Freq), stat = "identity")+
   theme_minimal()+
