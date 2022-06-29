@@ -25,6 +25,6 @@ fit <- stan(
     si_vec = si_vec
   ),
   seed = 123,
-  chains = 4,
+  chains = 2,
   verbose = TRUE
 )

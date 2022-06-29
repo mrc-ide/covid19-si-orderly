@@ -1,0 +1,25 @@
+script: script.R
+
+packages:
+- dplyr
+- epitrix
+- glue
+- purrr
+- rstan
+- zip
+
+global_resources:
+- scenario4a_mixture_phen.stan
+- likelihoods_phen.stan
+
+artefacts:
+  data:
+    description: Stan fits for S4 with phenomological model
+    filenames:
+      - s4mixture_phen_alietal.rds
+
+depends:
+  - clean_cowling_data_1:
+      id: latest
+      use:
+        cowling_data_clean.rds: cowling_data_clean.rds
