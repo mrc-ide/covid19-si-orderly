@@ -16,10 +16,10 @@ artefacts:
   data:
     description: Stan fits for S3 Mixture
     filenames:
-      - s3mixture_cowling.rds
+      - no_isol_gamma_alietal.rds
 
 depends:
-  - clean_cowling_data_1:
+  - clean_alietal_data_1:
       id: latest
       use:
-        cowling_data_clean.rds: cowling_data_clean.rds
+        alietal_data_clean.rds: alietal_data_clean.rds

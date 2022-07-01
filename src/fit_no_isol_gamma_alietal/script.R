@@ -1,6 +1,6 @@
 ##orderly::orderly_develop_start()
-cowling <- readRDS("cowling_data_clean.rds")
-cowling$si <- as.numeric(cowling$si, units="days")
+alietal <- readRDS("alietal_data_clean.rds")
+alietal$si <- as.numeric(alietal$si, units="days")
 ## Incubation period distribution
 ## https://pubmed.ncbi.nlm.nih.gov/32150748/
 param_inc <- list(
@@ -12,8 +12,8 @@ si_vec <- seq(-20, 40, 1)
 fit <- stan(
   file = "scenario3a_mixture_gamma.stan",
   data = list(
-    N = length(cowling$si),
-    si = cowling$si,
+    N = length(alietal$si),
+    si = alietal$si,
     max_shed = 21,
     offset = 3,
     alpha2 = param_inc$shape,
@@ -28,3 +28,5 @@ fit <- stan(
   chains = 2,
   verbose = TRUE
 )
+
+saveRDS(fit, "no_isol_gamma_alietal.rds")

@@ -3,6 +3,7 @@ packages:
 - dplyr
 - epicontacts
 - lubridate
+- purrr
 
 resources:
 - alietal_data.csv
