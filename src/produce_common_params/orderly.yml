@@ -1,0 +1,7 @@
+script: script.R
+
+artefacts:
+  data:
+    description: Common parameters needed by all tasks
+    filenames:
+      - common_params.rds
