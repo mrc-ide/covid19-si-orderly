@@ -15,7 +15,7 @@ fit <- stan(
     N = length(alietal$si),
     si = alietal$si,
     max_shed = 21,
-    offset = 3,
+    offset = 20,
     alpha2 = param_inc$shape,
     beta2 = param_inc$scale,
     max_invalid_si = 40,
@@ -25,7 +25,7 @@ fit <- stan(
     si_vec = si_vec
   ),
   seed = 123,
-  chains = 2,
+  chains = 2, iter = 10000,
   verbose = TRUE
 )
 
