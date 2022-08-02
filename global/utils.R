@@ -217,7 +217,7 @@ estimated_SI <- function(obs, inf_times, mixture,
   valid <- which(toss >= pinvalid)
 
   mixed_unc <- c(pooled_unc[valid], invalid_si[-valid])
-  mixed_c <- c(pooled_c[valid], invalid_si[-valid])
+  if (isol) mixed_c <- c(pooled_c[valid], invalid_si[-valid])
 
   out <- list(
     unconditional = NULL,

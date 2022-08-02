@@ -5,6 +5,8 @@ tab1 <- fitted_params(fit)
 samples_tost <- estimated_TOST_gamma(
   tab1, n = 1e4, extract(fit)
 )
+summary_tost <- tidy(summary(samples_tost[[1]]))
+
 obs_data <- readRDS("alietal_data_clean.rds")
 common_params <- readRDS("common_params.rds")
 
@@ -15,3 +17,5 @@ best_si <- estimated_SI(
   scale_inc = common_params$param_inc$scale
 )
 
+saveRDS(best_si, "best_si.rds")
+saveRDS(summary_tost, "summary_tost.rds")

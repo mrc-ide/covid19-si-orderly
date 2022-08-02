@@ -1,6 +1,7 @@
 script: process_gamma_fit.R
 
 packages:
+- broom
 - dplyr
 - epitrix
 - glue
@@ -12,7 +13,8 @@ artefacts:
   data:
     description: Stan fits for S3 Mixture
     filenames:
-      - no_isol_gamma_alietal.rds
+      - best_si.rds
+      - summary_tost.rds
 
 global_resources:
   utils.R: utils.R
