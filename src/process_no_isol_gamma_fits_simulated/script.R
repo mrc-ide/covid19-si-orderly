@@ -1,36 +1,5 @@
 ##orderly::orderly_develop_start()
 
-## Returns TOST for
-## (a) parameters with maximum posterior likelihood
-## (b) at the mean of the posterior distribution
-## (c) a distribution of distributions of TOST ; 1
-## distribution for each parameter in the posterior
-## distributions of xi, omega, and alpha  sampled jointly.
-## tab1 is the output from fitted_params function
-estimated_TOST_gamma <- function(tab1, n = 1e4, fit, offset = 20) {
-  # TOST
-  best <- tab1$best
-  names(best) <- rownames(tab1)
-  TOST_bestpars <- rgamma(
-    n = n, shape = best[["alpha1"]], rate = best[["beta1"]]
-  ) - offset
-
-  list(
-    TOST_bestpars = TOST_bestpars
-  )
-}
-
-fitted_params <- function(fit, digits = 2) {
-  tab1 <- as.data.frame(rstan::summary(fit)$summary)
-  fit <- rstan::extract(fit)
-
-  best_idx <- which.max(fit[["lp__"]])
-  best <- unlist(map(fit, function(x) x[[best_idx]]))
-  tab1 <- add_column(tab1, best = best, .after = 1)
-
-  round(tab1, digits)
-}
-
 fits <- unzip("s3_stanfits.zip")
 param_grid <- readRDS("param_grid.rds")
 params <- readRDS("params.rds")
