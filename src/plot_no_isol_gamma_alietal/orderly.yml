@@ -9,7 +9,7 @@ artefacts:
   data:
     description: Stan fits for S3 Mixture
     filenames:
-      - no_isol_gamma_alietal.rds
+      - no_isol_gamma_alietal.png
 
 depends:
   - process_no_isol_gamma_alietal:

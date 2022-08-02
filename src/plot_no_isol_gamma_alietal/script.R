@@ -46,12 +46,12 @@ plot_both_SIs <- function(SI1, SI2, data) {
     guides(
       fill = guide_legend(override.aes = list(alpha = c(0.8, 0.3, 0.3)))
     ) +
-    theme(legend.position = "top")
+    theme(legend.position = "top", legend.title = element_blank())
   p
 }
 
 summary_tab <- data.frame(
-  SI = c("True", "Expected"),
+  SI = c("True       ", "Expected"),
   Mean = c(mean(best_si$unconditional),
            mean(best_si$mixed_unc)),
   SD = c(sd(best_si$unconditional),
@@ -78,7 +78,6 @@ p <- plot_both_SIs(
 
 
 p <- p +
-  theme_minimal() +
   geom_table_npc(
     data = dfnpc, aes(npcx = x, npcy = y, label = tb),
     table.theme = ttheme_gtminimal()
