@@ -9,6 +9,39 @@ fitted_params <- function(fit, digits = 2) {
   round(tab1, digits)
 }
 
+# functions
+# density function for NF distribution
+dnf <- function(t, a = 0.5, b = 0.5, c = 0.1, tmax = 0) {
+  numerator <- a + b
+  growing <- a * exp(b * (t - tmax))
+  failing <- b * exp(-a * (t - tmax))
+  (numerator / (growing + failing))^c
+}
+
+# random sample from NF distribution
+rnf <- function(n, taus = seq(-20, 40, 0.1), a = 0.5, b = 0.5, c = 0.1, tmax = 0) {
+  p <- map_dbl(taus, function(t) dnf(t, a, b, c, tmax))
+  sample(taus, n, replace = TRUE, prob = p)
+}
+
+estimated_TOST_phen <- function(tab1, taus = seq(-20, 40, 0.1),
+                              n = 1e5, fit) {
+  # TOST
+  best <- tab1$best
+  names(best) <- rownames(tab1)
+  TOST_bestpars <- rnf(
+    n = n, taus = taus, a = best["a"], b = best["b"],
+    c = best["c"], tmax = best["tmax"]
+  )
+
+  mu_params <- tab1$mean
+  names(mu_params) <- rownames(tab1)
+
+  list(
+    TOST_bestpars = TOST_bestpars
+  )
+}
+
 
 ## Returns TOST for
 ## (a) parameters with maximum posterior likelihood
