@@ -11,6 +11,9 @@ artefacts:
     filenames:
       - no_isol_gamma_alietal.png
 
+global_resources:
+  utils_figs.R: utils_figs.R
+  
 depends:
   - process_no_isol_gamma_alietal:
       id: latest
