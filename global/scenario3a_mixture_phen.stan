@@ -1,4 +1,4 @@
-#include likelihoods_nf.stan
+#include likelihoods_phen.stan
 data{
   int N; // number of data points
   real si[N];  
