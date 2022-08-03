@@ -1,10 +1,9 @@
 ## orderly::orderly_develop_start(use_draft = "newer")
 source("utils.R")
-fit <- readRDS("no_isol_phen_alietal.rds")
+fit <- readRDS("no_isol_sn_alietal.rds")
 tab1 <- fitted_params(fit)
-
-samples_tost <- estimated_TOST_phen(
-  tab1, taus = seq(-20, 40, 0.1), n = 1e4
+samples_tost <- estimated_TOST_sn(
+  tab1, n = 1e4
 )
 summary_tost <- tidy(summary(samples_tost[[1]]))
 
