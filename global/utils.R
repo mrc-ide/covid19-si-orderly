@@ -24,8 +24,7 @@ rnf <- function(n, taus = seq(-20, 40, 0.1), a = 0.5, b = 0.5, c = 0.1, tmax = 0
   sample(taus, n, replace = TRUE, prob = p)
 }
 
-estimated_TOST_phen <- function(tab1, taus = seq(-20, 40, 0.1),
-                              n = 1e5, fit) {
+estimated_TOST_phen <- function(tab1, taus, n) {
   # TOST
   best <- tab1$best
   names(best) <- rownames(tab1)
@@ -34,14 +33,23 @@ estimated_TOST_phen <- function(tab1, taus = seq(-20, 40, 0.1),
     c = best["c"], tmax = best["tmax"]
   )
 
-  mu_params <- tab1$mean
-  names(mu_params) <- rownames(tab1)
-
   list(
     TOST_bestpars = TOST_bestpars
   )
 }
 
+estimated_TOST_sn <- function(tab1, n) {
+  # TOST
+  best <- tab1$best
+  names(best) <- rownames(tab1)
+  TOST_bestpars <- sn::rsn(
+    n = n, xi = best["a"], omega = best["b"], alpha = best["c"]
+  )
+
+  list(
+    TOST_bestpars = TOST_bestpars
+  )
+}
 
 ## Returns TOST for
 ## (a) parameters with maximum posterior likelihood
@@ -50,7 +58,7 @@ estimated_TOST_phen <- function(tab1, taus = seq(-20, 40, 0.1),
 ## distribution for each parameter in the posterior
 ## distributions of xi, omega, and alpha  sampled jointly.
 ## tab1 is the output from fitted_params function
-estimated_TOST_gamma <- function(tab1, n = 1e4, fit, offset = 20) {
+estimated_TOST_gamma <- function(tab1, n, fit, offset = 20) {
   # TOST
   best <- tab1$best
   names(best) <- rownames(tab1)
