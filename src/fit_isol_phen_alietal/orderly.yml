@@ -16,10 +16,14 @@ artefacts:
   data:
     description: Stan fits for S4 with phenomological model
     filenames:
-      - s4mixture_phen_alietal.rds
+      - isol_phen_alietal.rds
 
 depends:
-  - clean_cowling_data_1:
+  - produce_common_params:
       id: latest
       use:
-        cowling_data_clean.rds: cowling_data_clean.rds
+        common_params.rds: common_params.rds
+  - clean_alietal_data_1:
+      id: latest
+      use:
+        alietal_data_clean.rds: alietal_data_clean.rds
