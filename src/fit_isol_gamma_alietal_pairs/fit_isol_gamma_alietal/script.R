@@ -23,4 +23,4 @@ fit <- stan(
   verbose = TRUE
 )
 
-saveRDS(fit, "isol_gamma_alietal_pairs.rds")
+saveRDS(fit, "isol_gamma_alietal.rds")

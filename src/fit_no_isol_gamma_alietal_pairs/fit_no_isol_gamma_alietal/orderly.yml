@@ -9,14 +9,14 @@ packages:
 - zip
 
 global_resources:
-- scenario4a_mixture_gamma.stan  
+- scenario3a_mixture_gamma.stan  
 - likelihoods_gamma.stan
 
 artefacts:
   data:
-    description: Stan fits for S4 Mixture
+    description: Stan fits for S3 Mixture
     filenames:
-      - isol_gamma_alietal_pairs.rds
+      - no_isol_gamma_alietal.rds
 
 depends:
   - produce_common_params:
@@ -26,4 +26,4 @@ depends:
   - clean_alietal_data_1:
       id: latest
       use:
-        alietal_data_clean.rds: alietal_pairs.rds
+        alietal_data_clean.rds: alietal_data_clean.rds

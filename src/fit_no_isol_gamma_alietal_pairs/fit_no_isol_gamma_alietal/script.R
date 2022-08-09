@@ -3,11 +3,10 @@ alietal <- readRDS("alietal_data_clean.rds")
 alietal$si <- as.numeric(alietal$si, units="days")
 common_params <- readRDS("common_params.rds")
 fit <- stan(
-  file = "scenario4a_mixture_gamma.stan",
+  file = "scenario3a_mixture_gamma.stan",
   data = list(
     N = length(alietal$si),
     si = alietal$si,
-    nu = alietal$nu,
     max_shed = common_params$max_shed,
     offset = common_params$offset,
     alpha2 = common_params$param_inc$shape,
@@ -23,4 +22,4 @@ fit <- stan(
   verbose = TRUE
 )
 
-saveRDS(fit, "isol_gamma_alietal_pairs.rds")
+saveRDS(fit, "no_isol_gamma_alietal.rds")
