@@ -33,7 +33,6 @@ p <- p +
     data = dfnpc, aes(npcx = x, npcy = y, label = tb),
     table.theme = ttheme_gtminimal()
   ) + ggtitle("Serial interval estimated using discrete transmission pairs",
-              subtitle = "Infectious period modelled as a gamma rv")
+              subtitle = "Infectious period modelled using phenomenological distribution")
 
-
-ggsave("isol_gamma_alietal_pairs.png", p)
+ggsave("isol_phen_alietal_pairs.png", p)
