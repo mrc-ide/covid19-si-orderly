@@ -27,7 +27,7 @@ depends:
   - clean_alietal_data_1:
       id: latest
       use:
-        alietal_data_clean.rds: alietal_data_clean.rds
+        alietal_data_clean.rds: alietal_pairs.rds
   - fit_isol_gamma_alietal_pairs:
       id: latest
       use:

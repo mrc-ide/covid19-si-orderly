@@ -1,4 +1,4 @@
-script: process_phen_fit.R
+script: process_sn_fit.R
 
 packages:
 - broom
@@ -7,6 +7,7 @@ packages:
 - glue
 - purrr
 - rstan
+- sn
 - tibble
 
 artefacts:
@@ -28,7 +29,7 @@ depends:
       id: latest
       use:
         alietal_data_clean.rds: alietal_pairs.rds
-  - fit_isol_phen_alietal_pairs:
+  - fit_isol_sn_alietal_pairs:
       id: latest
       use:
-        isol_phen_alietal.rds: isol_phen_alietal_pairs.rds
+        isol_sn_alietal.rds: isol_sn_alietal_pairs.rds
