@@ -14,12 +14,16 @@ global_resources:
 
 artefacts:
   data:
-    description: Stan fits for S3 Mixture
+    description: Stan fits for S3/S4 Mixture
     filenames:
-      - s4mixture_cowling.rds
+      - part_isol_gamma_alietal_pairs.rds
 
 depends:
-  - clean_cowling_data_1:
+  - produce_common_params:
       id: latest
       use:
-        cowling_data_clean.rds: cowling_data_clean.rds
+        common_params.rds: common_params.rds
+  - clean_alietal_data_1:
+      id: latest
+      use:
+        alietal_data_clean.rds: alietal_part_isol_pairs.rds
