@@ -1,0 +1,116 @@
+script: produce_summary_tables.R
+
+packages:
+- broom
+- dplyr
+- epitrix
+- glue
+- purrr
+- rstan
+- tibble
+
+artefacts:
+  data:
+    description: Stan fits for S4 Mixture
+    filenames:
+      - gamma_fits_si.rds
+      - phen_fits_si.rds
+      - sn_fits_si.rds
+      - gamma_fits_tost.rds
+      - phen_fits_tost.rds
+      - sn_fits_tost.rds
+
+global_resources:
+  utils.R: utils.R
+  
+depends:
+  - process_isol_gamma_alietal:
+      id: latest
+      use:
+        isol_gamma_alietal_si.rds: best_si.rds
+        isol_gamma_alietal_tost.rds: summary_tost.rds        
+  - process_no_isol_gamma_alietal:
+      id: latest
+      use:
+        no_isol_gamma_alietal_si.rds: best_si.rds
+        no_isol_gamma_alietal_tost.rds: summary_tost.rds        
+  - process_isol_gamma_alietal_pairs:
+      id: latest
+      use:
+        isol_gamma_alietal_si_pairs.rds: best_si.rds
+        isol_gamma_alietal_tost_pairs.rds: summary_tost.rds        
+  - process_no_isol_gamma_alietal_pairs:
+      id: latest
+      use:
+        no_isol_gamma_alietal_si_pairs.rds: best_si.rds
+        no_isol_gamma_alietal_tost_pairs.rds: summary_tost.rds        
+  - process_part_isol_gamma_alietal_pairs:
+      id: latest
+      use:
+        part_isol_gamma_alietal_si_pairs.rds: best_si.rds
+        part_isol_gamma_alietal_tost_pairs.rds: summary_tost.rds        
+  - process_part_isol_gamma_alietal:
+      id: latest
+      use:
+        part_isol_gamma_alietal_si.rds: best_si.rds
+        part_isol_gamma_alietal_tost.rds: summary_tost.rds        
+  - process_isol_sn_alietal:
+      id: latest
+      use:
+        isol_sn_alietal_si.rds: best_si.rds
+        isol_sn_alietal_tost.rds: summary_tost.rds        
+  - process_no_isol_sn_alietal:
+      id: latest
+      use:
+        no_isol_sn_alietal_si.rds: best_si.rds
+        no_isol_sn_alietal_tost.rds: summary_tost.rds        
+  - process_isol_sn_alietal_pairs:
+      id: latest
+      use:
+        isol_sn_alietal_si_pairs.rds: best_si.rds
+        isol_sn_alietal_tost_pairs.rds: summary_tost.rds        
+  - process_no_isol_sn_alietal_pairs:
+      id: latest
+      use:
+        no_isol_sn_alietal_si_pairs.rds: best_si.rds
+        no_isol_sn_alietal_tost_pairs.rds: summary_tost.rds        
+  - process_part_isol_sn_alietal_pairs:
+      id: latest
+      use:
+        part_isol_sn_alietal_si_pairs.rds: best_si.rds
+        part_isol_sn_alietal_tost_pairs.rds: summary_tost.rds        
+  - process_part_isol_sn_alietal:
+      id: latest
+      use:
+        part_isol_sn_alietal_si.rds: best_si.rds
+        part_isol_sn_alietal_tost.rds: summary_tost.rds        
+  - process_isol_phen_alietal:
+      id: latest
+      use:
+        isol_phen_alietal_si.rds: best_si.rds
+        isol_phen_alietal_tost.rds: summary_tost.rds        
+  - process_no_isol_phen_alietal:
+      id: latest
+      use:
+        no_isol_phen_alietal_si.rds: best_si.rds
+        no_isol_phen_alietal_tost.rds: summary_tost.rds        
+  - process_isol_phen_alietal_pairs:
+      id: latest
+      use:
+        isol_phen_alietal_si_pairs.rds: best_si.rds
+        isol_phen_alietal_tost_pairs.rds: summary_tost.rds        
+  - process_no_isol_phen_alietal_pairs:
+      id: latest
+      use:
+        no_isol_phen_alietal_si_pairs.rds: best_si.rds
+        no_isol_phen_alietal_tost_pairs.rds: summary_tost.rds        
+  - process_part_isol_phen_alietal_pairs:
+      id: latest
+      use:
+        part_isol_phen_alietal_si_pairs.rds: best_si.rds
+        part_isol_phen_alietal_tost_pairs.rds: summary_tost.rds        
+  - process_part_isol_phen_alietal:
+      id: latest
+      use:
+        part_isol_phen_alietal_si.rds: best_si.rds
+        part_isol_phen_alietal_tost.rds: summary_tost.rds        
