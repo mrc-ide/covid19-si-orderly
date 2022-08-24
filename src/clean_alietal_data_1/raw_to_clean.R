@@ -164,4 +164,6 @@ saveRDS(data_s3_s4mix, "alietal_part_isol.rds")
 ## discrete pairs with nu replacement for s3 type pairs
 data_discrete_pairs_s3_s4mix <- filter(data_s3_s4mix, cluster_size == 2)
 data_discrete_pairs_s3_s4mix <- arrange(data_discrete_pairs_s3_s4mix, nu)
-saveRDS(data_s3_s4mix, "alietal_part_isol_pairs.rds")
+saveRDS(
+  data_discrete_pairs_s3_s4mix, "alietal_part_isol_pairs.rds"
+)

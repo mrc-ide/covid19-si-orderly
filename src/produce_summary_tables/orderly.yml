@@ -1,3 +1,5 @@
+script: produce_summary_tables.R
+
 packages:
 - broom
 - dplyr
@@ -11,8 +13,9 @@ artefacts:
   data:
     description: Stan fits for S4 Mixture
     filenames:
-      - best_si.rds
-      - summary_tost.rds
+      - gamma_fits_params.rds
+      - phen_fits_params.rds
+      - sn_fits_params.rds
 
 global_resources:
   utils.R: utils.R
@@ -33,4 +36,68 @@ depends:
   - fit_no_isol_gamma_alietal:
       id: latest
       use:
-        no_isol_gamma_alietal.rds: no_isol_gamma_alietal.rds        
+        no_isol_gamma_alietal.rds: no_isol_gamma_alietal.rds
+  - fit_isol_gamma_alietal_pairs:
+      id: latest
+      use:
+        isol_gamma_alietal_pairs.rds: isol_gamma_alietal_pairs.rds
+  - fit_no_isol_gamma_alietal_pairs:
+      id: latest
+      use:
+        no_isol_gamma_alietal_pairs.rds: no_isol_gamma_alietal_pairs.rds
+  - fit_part_isol_gamma_alietal_pairs:
+      id: latest
+      use:
+        part_isol_gamma_alietal_pairs.rds: part_isol_gamma_alietal_pairs.rds
+  - fit_part_isol_gamma_alietal:
+      id: latest
+      use:
+        part_isol_gamma_alietal.rds: part_isol_gamma_alietal.rds
+  - fit_isol_sn_alietal:
+      id: latest
+      use:
+        isol_sn_alietal.rds: isol_sn_alietal.rds
+  - fit_no_isol_sn_alietal:
+      id: latest
+      use:
+        no_isol_sn_alietal.rds: no_isol_sn_alietal.rds
+  - fit_isol_sn_alietal_pairs:
+      id: latest
+      use:
+        isol_sn_alietal_pairs.rds: isol_sn_alietal_pairs.rds
+  - fit_no_isol_sn_alietal_pairs:
+      id: latest
+      use:
+        no_isol_sn_alietal_pairs.rds: no_isol_sn_alietal_pairs.rds
+  - fit_part_isol_sn_alietal_pairs:
+      id: latest
+      use:
+        part_isol_sn_alietal_pairs.rds: part_isol_sn_alietal_pairs.rds
+  - fit_part_isol_sn_alietal:
+      id: latest
+      use:
+        part_isol_sn_alietal.rds: part_isol_sn_alietal.rds
+  - fit_isol_phen_alietal:
+      id: latest
+      use:
+        isol_phen_alietal.rds: isol_phen_alietal.rds
+  - fit_no_isol_phen_alietal:
+      id: latest
+      use:
+        no_isol_phen_alietal.rds: no_isol_phen_alietal.rds
+  - fit_isol_phen_alietal_pairs:
+      id: latest
+      use:
+        isol_phen_alietal_pairs.rds: isol_phen_alietal_pairs.rds
+  - fit_no_isol_phen_alietal_pairs:
+      id: latest
+      use:
+        no_isol_phen_alietal_pairs.rds: no_isol_phen_alietal_pairs.rds
+  - fit_part_isol_phen_alietal_pairs:
+      id: latest
+      use:
+        part_isol_phen_alietal_pairs.rds: part_isol_phen_alietal_pairs.rds
+  - fit_part_isol_phen_alietal:
+      id: latest
+      use:
+        part_isol_phen_alietal.rds: part_isol_phen_alietal.rds                        
