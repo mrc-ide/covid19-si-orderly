@@ -1,4 +1,4 @@
-script: process_gamma_fit.R
+script: process_phen_fit.R
 
 packages:
 - broom
@@ -29,7 +29,7 @@ depends:
       id: latest
       use:
         alietal_data_clean.rds: alietal_pairs.rds
-  - fit_no_isol_gamma_alietal_pairs:
+  - fit_no_isol_phen_alietal_pairs:
       id: latest
       use:
-        no_isol_gamma_alietal_pairs.rds: no_isol_gamma_alietal_pairs.rds
+        no_isol_phen_alietal_pairs.rds: no_isol_phen_alietal_pairs.rds

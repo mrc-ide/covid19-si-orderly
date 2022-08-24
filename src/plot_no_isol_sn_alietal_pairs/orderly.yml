@@ -1,0 +1,25 @@
+script: script.R
+
+packages:
+- dplyr
+- ggplot2
+- ggpmisc
+
+artefacts:
+  data:
+    description: Stan fits for S3 Mixture
+    filenames:
+      - no_isol_sn_alietal_pairs.png
+
+global_resources:
+  utils_figs.R: utils_figs.R
+  
+depends:
+  - process_no_isol_sn_alietal_pairs:
+      id: latest
+      use:
+        best_si.rds: best_si.rds
+  - clean_alietal_data_1:
+      id: latest
+      use:
+        alietal_data_clean.rds: alietal_pairs.rds

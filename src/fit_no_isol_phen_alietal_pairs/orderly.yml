@@ -16,7 +16,7 @@ artefacts:
   data:
     description: Stan fits for S3 with phenomological model
     filenames:
-      - no_isol_phen_alietal.rds
+      - no_isol_phen_alietal_pairs.rds
 
 depends:
   - produce_common_params:
@@ -26,4 +26,4 @@ depends:
   - clean_alietal_data_1:
       id: latest
       use:
-        alietal_data_clean.rds: alietal_data_clean.rds
+        alietal_data_clean.rds: alietal_pairs.rds
