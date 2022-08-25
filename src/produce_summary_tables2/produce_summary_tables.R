@@ -41,6 +41,11 @@ si_summary <- gsub("gamma", "phen", infiles) %>%
 
 saveRDS(si_summary, "phen_fits_si.rds")
 
+tost_summary <- gsub("si", "tost", infiles) %>%
+  map_dfr(readRDS, .id = "Model")
+
+saveRDS(tost_summary, "gamma_fits_tost.rds")
+
 tost_summary <- gsub("gamma", "sn", infiles) %>%
   gsub("si", "tost", .) %>%
   map_dfr(readRDS, .id = "Model")
