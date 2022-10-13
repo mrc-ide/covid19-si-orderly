@@ -1,21 +1,21 @@
-script: produce_summary_tables.R
+script: produce_summary_figs.R
 
 packages:
 - broom
 - dplyr
 - epitrix
+- ggpmisc
 - glue
+- gridExtra
 - purrr
 - rstan
 - tibble
 
 artefacts:
-  data:
-    description: Stan fits for S4 Mixture
+  staticgraph:
+    description: Summary figures
     filenames:
-      - gamma_fits_params.rds
-      - phen_fits_params.rds
-      - sn_fits_params.rds
+      - sn_pairs_tost.png
 
 global_resources:
   utils.R: utils.R
