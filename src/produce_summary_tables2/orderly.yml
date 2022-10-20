@@ -1,13 +1,11 @@
 script: produce_summary_tables.R
 
 packages:
-- broom
 - dplyr
 - epitrix
 - glue
 - purrr
-- rstan
-- tibble
+- tidyr
 
 artefacts:
   data:
@@ -16,10 +14,7 @@ artefacts:
       - gamma_fits_si.rds
       - phen_fits_si.rds
       - sn_fits_si.rds
-      - gamma_fits_tost.rds
-      - phen_fits_tost.rds
-      - sn_fits_tost.rds
-
+      
 global_resources:
   utils.R: utils.R
   

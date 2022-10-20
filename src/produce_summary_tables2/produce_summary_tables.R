@@ -8,10 +8,22 @@ infiles <- c(
   `Part Isolation (Pairs)` = "part_isol_gamma_alietal_si_pairs.rds"
 )
 
+
+## Given a vector, returns prettily formatted string
+pretty_summary <- function(vec, probs = c(0.025, 0.5, 0.975), digits = 1) {
+  out <- quantile(vec, probs = probs)
+  out <- lapply(
+    out, function(x) format(round(x, digits), nsmall = digits)
+  )
+  glue(
+    "{out[[2]]} ({out[[1]]},{out[[3]]})"
+  )
+}
+
 produce_si_table <- function(si) {
   out <- map(si, function(x) {
     if (length(x) == 0) NULL
-    else tidy(summary(x))
+    else data.frame(median_95_cri = pretty_summary(x))
   })
 
   out <- keep(out, ~ ! is.null(.))
@@ -20,7 +32,8 @@ produce_si_table <- function(si) {
 }
 
 si_summary <- map(infiles, readRDS) %>%
-  map_dfr(produce_si_table, .id = "Model")
+  map_dfr(produce_si_table, .id = "Model") %>%
+  spread(`SI Type`, median_95_cri)
 
 
 saveRDS(si_summary, "gamma_fits_si.rds")
@@ -28,7 +41,8 @@ saveRDS(si_summary, "gamma_fits_si.rds")
 
 si_summary <- gsub("gamma", "sn", infiles) %>%
   map(readRDS) %>%
-  map_dfr(produce_si_table, .id = "Model")
+  map_dfr(produce_si_table, .id = "Model") %>%
+  spread(`SI Type`, median_95_cri)
 
 
 saveRDS(si_summary, "sn_fits_si.rds")
@@ -36,25 +50,8 @@ saveRDS(si_summary, "sn_fits_si.rds")
 
 si_summary <- gsub("gamma", "phen", infiles) %>%
   map(readRDS) %>%
-  map_dfr(produce_si_table, .id = "Model")
+  map_dfr(produce_si_table, .id = "Model") %>%
+  spread(`SI Type`, median_95_cri)
 
 
 saveRDS(si_summary, "phen_fits_si.rds")
-
-tost_summary <- gsub("si", "tost", infiles) %>%
-  map_dfr(readRDS, .id = "Model")
-
-saveRDS(tost_summary, "gamma_fits_tost.rds")
-
-tost_summary <- gsub("gamma", "sn", infiles) %>%
-  gsub("si", "tost", .) %>%
-  map_dfr(readRDS, .id = "Model")
-
-saveRDS(tost_summary, "sn_fits_tost.rds")
-
-
-tost_summary <- gsub("gamma", "phen", infiles) %>%
-  gsub("si", "tost", .) %>%
-  map_dfr(readRDS, .id = "Model")
-
-saveRDS(tost_summary, "phen_fits_tost.rds")
