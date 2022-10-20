@@ -14,7 +14,7 @@ tost_summary <- function(samples_tost) {
   f <- function(x) format(round(x, 1), nsmall = 1)
 
   df$`Median (95% CrI)` <- glue(
-    "{f(df$median)} ({f(df$low)} - {f(df$high)})"
+    "{f(df$median)} ({f(df$low)},{f(df$high)})"
   )
 
   df
@@ -28,7 +28,7 @@ tost_summary_figure <- function(tost, distr) {
 
     df <- tost_summary(samples_tost)
     medians <- df$median
-
+    df <- df[, c("Model", "Median (95% CrI)")]
     p <- ggplot() +
       geom_density(
         aes(samples_tost[[1]][[1]], fill = fill1),
@@ -108,7 +108,10 @@ tost <- imap(
   }
 )
 
-out <- tost_summary_figure(tost, "gamma")
+tost_summary_figure(tost, "gamma")
+gamma_tost_summary <- map_dfr(tost, tost_summary) |>
+  select(Model, `Median (95% CrI)`)
+
 
 
 tost <- map(infiles, ~ gsub("gamma", "sn", .)) %>%
@@ -125,6 +128,9 @@ tost <- map(infiles, ~ gsub("gamma", "sn", .)) %>%
 
 tost_summary_figure(tost, "sn")
 
+sn_tost_summary <- map_dfr(tost, tost_summary) |>
+  select(Model, `Median (95% CrI)`)
+
 
 tost <- map(infiles, ~ gsub("gamma", "phen", .)) %>%
   imap(function(files, model) {
@@ -139,3 +145,10 @@ tost <- map(infiles, ~ gsub("gamma", "phen", .)) %>%
 )
 
 tost_summary_figure(tost, "phen")
+
+phen_tost_summary <- map_dfr(tost, tost_summary) |>
+  select(Model, `Median (95% CrI)`)
+
+saveRDS(gamma_tost_summary, "gamma_fits_tost.rds")
+saveRDS(sn_tost_summary, "sn_fits_tost.rds")
+saveRDS(phen_tost_summary, "phen_fits_tost.rds")

@@ -12,10 +12,16 @@ packages:
 - tibble
 
 artefacts:
-  staticgraph:
-    description: Summary figures
-    filenames:
-      - sn_pairs_tost.png
+  - data:
+      description: Stan fits for S4 Mixture
+      filenames:
+        - gamma_fits_tost.rds
+        - sn_fits_tost.rds
+        - phen_fits_tost.rds
+  - staticgraph:
+      description: Summary figures
+      filenames:
+        - sn_pairs_tost.png
 
 global_resources:
   utils.R: utils.R
