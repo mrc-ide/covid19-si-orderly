@@ -1,0 +1,32 @@
+script: script.R
+
+packages:
+- dplyr
+- gt
+- purrr
+
+artefacts:
+  data:
+    description: Summary tables as docx files
+    filenames:
+      - phen_summary.docx
+      - sn_summary.docx
+      - gamma_summary.docx
+
+depends:
+  - produce_summary_tables:
+      id: latest
+      use:
+        phen_params.rds: phen_fits_params.rds
+  - produce_summary_tables2:
+      id: latest
+      use:
+        gamma_si.rds: gamma_fits_si.rds
+        phen_si.rds: phen_fits_si.rds
+        sn_si.rds: sn_fits_si.rds
+  - produce_tost_summary_figures:
+      id: latest
+      use:
+        gamma_tost.rds: gamma_fits_tost.rds
+        phen_tost.rds: phen_fits_tost.rds
+        sn_tost.rds: sn_fits_tost.rds
