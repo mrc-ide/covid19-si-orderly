@@ -1,32 +1,33 @@
 ## orderly::orderly_develop_start(use_draft = "newer")
 source("utils.R")
+tost_summary <- function(samples_tost) {
+    ## Prepare table for annotation
+  df <- data.frame(
+    Model = names(samples_tost),
+    median = c(quantile(samples_tost[[1]][[1]], 0.5),
+               quantile(samples_tost[[2]][[1]], 0.5)),
+    low = c(quantile(samples_tost[[1]][[1]], 0.025),
+            quantile(samples_tost[[2]][[1]], 0.025)),
+    high = c(quantile(samples_tost[[1]][[1]], 0.975),
+             quantile(samples_tost[[2]][[1]], 0.975)))
+
+  f <- function(x) format(round(x, 1), nsmall = 1)
+
+  df$`Median (95% CrI)` <- glue(
+    "{f(df$median)} ({f(df$low)} - {f(df$high)})"
+  )
+
+  df
+}
+
 tost_summary_figure <- function(tost, distr) {
   iwalk(tost, function(samples_tost, model) {
     sub_models <- names(samples_tost)
     fill1 <- palette[[model]][[sub_models[1]]]
     fill2 <- palette[[model]][[sub_models[2]]]
-    ## Prepare table for annotation
-    df <- data.frame(
-      Model = sub_models,
-      median = c(quantile(samples_tost[[1]][[1]], 0.5),
-                 quantile(samples_tost[[2]][[1]], 0.5)),
-      low = c(quantile(samples_tost[[1]][[1]], 0.025),
-              quantile(samples_tost[[2]][[1]], 0.025)),
-      high = c(quantile(samples_tost[[1]][[1]], 0.975),
-               quantile(samples_tost[[2]][[1]], 0.975)))
-    ## store for making vline
+
+    df <- tost_summary(samples_tost)
     medians <- df$median
-
-    df <- mutate_if(
-      df, is.numeric,
-      function(x) format(round(x, 1), nsmall = 1)
-    )
-    df$`Median (95% CrI)` <- glue(
-      "{df$median} ({df$low} - {df$high})"
-    )
-
-
-    df <- df[, c("Model", "Median (95% CrI)")]
 
     p <- ggplot() +
       geom_density(
@@ -61,6 +62,7 @@ tost_summary_figure <- function(tost, distr) {
       )
 
     ggsave(glue("{distr}_{model}_tost.png"), p)
+
   })
 
 }
@@ -106,7 +108,7 @@ tost <- imap(
   }
 )
 
-tost_summary_figure(tost, "gamma")
+out <- tost_summary_figure(tost, "gamma")
 
 
 tost <- map(infiles, ~ gsub("gamma", "sn", .)) %>%
