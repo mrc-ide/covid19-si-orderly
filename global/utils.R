@@ -38,6 +38,28 @@ estimated_TOST_phen <- function(tab1, taus, n) {
   )
 }
 
+## Posterior predictive distribution
+postpred_TOST_phen <- function(fit, taus, n) {
+  ## First draw 1000 samples from the posterior distribution of the
+  ## parameters
+  out <- extract(fit)
+  idx <- sample(length(out[[1]]), size = 1000)
+  ## Then for each sampled param combination, simulate TOST
+  tost <- map(
+    idx,
+    function(index)  {
+     rnf(
+       n = n, taus = taus, a = out[["a"]][index], b = out[["b"]][index],
+       c = out[["c"]][index], tmax = out[["tmax"]][index]
+     )
+    }
+  )
+
+  list(
+    TOST_postpred = unlist(tost)
+  )
+}
+
 estimated_TOST_sn <- function(tab1, n) {
   # TOST
   best <- tab1$best
@@ -71,6 +93,26 @@ estimated_TOST_gamma <- function(tab1, n, fit, offset = 20) {
   )
 }
 
+
+postpred_TOST_gamma <- function(fit, n, offset = 20) {
+  ## First draw 1000 samples from the posterior distribution of the
+  ## parameters
+  out <- extract(fit)
+  idx <- sample(length(out[[1]]), size = 1000)
+  ## Then for each sampled param combination, simulate TOST
+  tost <- map(
+    idx,
+    function(index)  {
+     rgamma(
+       n = n, shape = out[["alpha1"]][index], rate = out[["beta1"]][index],
+     ) - offset
+    }
+  )
+
+  list(
+    TOST_postpred = unlist(tost)
+  )
+}
 
 nice_model_name <- function(model) {
   suffix <- case_when(
