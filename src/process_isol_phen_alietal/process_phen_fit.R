@@ -6,6 +6,7 @@ fit <- readRDS("isol_phen_alietal.rds")
 ##   tab1, taus = seq(-20, 40, 0.1), n = 1e4
 ## )
 tost_pp <- postpred_TOST_phen(fit, taus = seq(-20, 40, 0.1), n = 1e4)
+
 summary_tost <- tidy(summary(tost_pp[[1]]))
 
 obs_data <- readRDS("alietal_data_clean.rds")

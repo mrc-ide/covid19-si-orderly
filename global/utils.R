@@ -73,6 +73,26 @@ estimated_TOST_sn <- function(tab1, n) {
   )
 }
 
+postpred_TOST_sn <- function(fit, n) {
+  ## First draw 1000 samples from the posterior distribution of the
+  ## parameters
+  out <- extract(fit)
+  idx <- sample(length(out[[1]]), size = 1000)
+  ## Then for each sampled param combination, simulate TOST
+  tost <- map(
+    idx,
+    function(index)  {
+      sn::rsn(
+        n = n, xi = out[["a"]][index], omega = out[["b"]][index],
+        alpha = out[["c"]][index]
+     )
+    }
+  )
+
+  list(TOST_postpred = unlist(tost))
+}
+
+
 ## Returns TOST for
 ## (a) parameters with maximum posterior likelihood
 ## (b) at the mean of the posterior distribution
